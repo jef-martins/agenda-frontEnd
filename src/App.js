@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <div className="container centro">
         <div className="border border-5">
-          <img className="d-grid gap-2 mx-auto" src={logo} width="200" height="150"/>
+          <img className="tamanho-img" src={logo} alt=''/>
           <Agendamento/>
         </div>
       </div>
