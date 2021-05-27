@@ -3,11 +3,11 @@ import '../App.css';
 import '../bootstrap.css';
 import Agendamento from '../site/Agendamento';
 
-function App() {
+function Home() {
   return (
     <Agendamento/>
   );
 }
 
-export default App;
+export default Home;
    

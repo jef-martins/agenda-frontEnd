@@ -4,7 +4,7 @@ import '../App.css';
 import '../bootstrap.css';
 import Alerta from '../componentes/alerta';
 import {Link} from 'react-router-dom';
-import Header from '../componentes/header';
+import Logo from '../componentes/logo';
 
 class Agendamento extends Component {
     constructor(props){
@@ -70,7 +70,7 @@ class Agendamento extends Component {
     render(){
         return (
             <div>
-                <Header/>
+                <Logo/>
                 <div>
                     {
                         this.state.status &&

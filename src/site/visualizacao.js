@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '../componentes/header';
+import Logo from '../componentes/logo';
 import '../App.css';
 import '../bootstrap.css';
 import {Link} from 'react-router-dom';
@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom';
 function App(props) {
   return (
       <div>
-        <Header/>
+        <Logo/>
         <Link to="/" type="button" className="btn btn-outline-danger">Agendamento</Link>
       </div>
   );
