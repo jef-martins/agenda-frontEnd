@@ -9,7 +9,6 @@ class Agendamento extends Component {
         super(props);
         this.state = {
             funcionario: [],
-            data: [],
             form: {
                 atividade: '',
                 funcEscolhido: '',
@@ -33,9 +32,6 @@ class Agendamento extends Component {
     async componentDidMount() {
         const response = await api.get('integrante');
         this.setState({ funcionario: response.data });
-
-        const response2 = await api.get('data');
-        this.setState({ data: response2.data });
     }
 
     onSave = async () => {
@@ -44,16 +40,18 @@ class Agendamento extends Component {
             hrInicial: this.state.form.hrInicial,
             hrFinal: this.state.form.hrFinal
         });
-        
+
         if(response.status === 200){
-            const response2 = await api.post('tarefa', {
+            const response2 = await api.get('data');
+
+            const response3 = await api.post('tarefa', {
                 atividade: this.state.form.atividade,
                 fkIntegrante: this.state.form.funcEscolhido,
-                fkData: this.state.data[this.state.data.length - 1].id,
+                fkData: response2.data[response2.data.length - 1].id,
                 fkStatus: 1
             });
 
-            if(response2.status === 200)
+            if(response3.status === 200)
                 this.setState({status: !this.state.status});
         }
     }
