@@ -3,6 +3,8 @@ import api from '../services/api';
 import '../App.css';
 import '../bootstrap.css';
 import Alerta from '../componentes/alerta';
+import {Link} from 'react-router-dom';
+import Header from '../componentes/header';
 
 class Agendamento extends Component {
     constructor(props){
@@ -51,14 +53,24 @@ class Agendamento extends Component {
                 fkStatus: 1
             });
 
-            if(response3.status === 200)
+            if(response3.status === 200){
                 this.setState({status: !this.state.status});
+
+                //zerar os inputs na pagina
+                let dados = this.state.form;
+                dados["atividade"] = '';
+                dados["data"] = '';
+                dados["hrInicial"] = '';
+                dados["hrFinal"] = ''; 
+                this.setState({form: dados});
+            }
         }
     }
 
     render(){
         return (
             <div>
+                <Header/>
                 <div>
                     {
                         this.state.status &&
@@ -92,7 +104,7 @@ class Agendamento extends Component {
                         <input value={this.state.form.hrFinal} onChange={this.setForm} name="hrFinal" type="time" className="form-control"></input>
                     </div>
                     <div className="tamanho-div d-grid gap-2 d-md-flex justify-content-md-end mb-2">
-                        <button type="button" className="btn btn-outline-danger">Voltar</button>
+                        <Link to="/visualizacao" type="button" className="btn btn-outline-danger">Voltar</Link>
                         <button onClick={this.onSave} type="button" className="btn btn-outline-success">Enviar</button>
                     </div>
                 </form>

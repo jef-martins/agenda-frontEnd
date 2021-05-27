@@ -1,7 +1,4 @@
-import './site/Agendamento';
-import React from 'react';
-import logo from './logo.jpg';
-import Agendamento from './site/Agendamento';
+import Rotas from './services/rotas'
 
 
 function App() {
@@ -9,8 +6,7 @@ function App() {
     <div className="App">
       <div className="container centro">
         <div className="border border-5">
-          <img className="tamanho-img" src={logo} alt=''/>
-          <Agendamento/>
+          <Rotas/>
         </div>
       </div>
     </div>
