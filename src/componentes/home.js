@@ -1,11 +1,11 @@
 import React from 'react';
 import '../App.css';
 import '../bootstrap.css';
-import Agendamento from '../site/Agendamento';
+import Visualizacao from '../site/visualizacao';
 
 function Home() {
   return (
-    <Agendamento/>
+    <Visualizacao/>
   );
 }
 

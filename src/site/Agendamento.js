@@ -52,9 +52,7 @@ class Agendamento extends Component {
                 fkData: response2.data[response2.data.length - 1].id,
                 fkStatus: 1
             });
-
             if(response3.status === 200){
-                this.setState({status: !this.state.status});
 
                 //zerar os inputs na pagina
                 let dados = this.state.form;
@@ -63,6 +61,10 @@ class Agendamento extends Component {
                 dados["hrInicial"] = '';
                 dados["hrFinal"] = ''; 
                 this.setState({form: dados});
+                this.setState({status: true});
+                
+            }else{
+                this.setState({status: false});
             }
         }
     }
@@ -104,8 +106,8 @@ class Agendamento extends Component {
                         <input value={this.state.form.hrFinal} onChange={this.setForm} name="hrFinal" type="time" className="form-control"></input>
                     </div>
                     <div className="tamanho-div d-grid gap-2 d-md-flex justify-content-md-end mb-2">
-                        <Link to="/visualizacao" type="button" className="btn btn-outline-danger">Voltar</Link>
-                        <button onClick={this.onSave} type="button" className="btn btn-outline-success">Enviar</button>
+                        <Link to="/" type="button" className="btn btn-outline-danger">Voltar</Link>
+                        <button onClick={this.onSave} type="button" className="btn btn-outline-success">Salvar</button>
                     </div>
                 </form>
             </div>

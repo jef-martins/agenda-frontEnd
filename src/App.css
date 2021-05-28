@@ -9,6 +9,10 @@
   margin-left: 10%;
 }
 
+.tamanho-pesquisa {
+  width: 500px;
+}
+
 .tamanho-hora-ini {
   max-width: 30%;
   margin-left: 10%;
@@ -32,5 +36,9 @@
 .tamanho-img {
   max-width: 18%;
   margin-left: 41%;
+}
+
+.link{
+  text-decoration:none;
 }
 

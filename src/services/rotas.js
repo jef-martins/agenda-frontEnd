@@ -1,8 +1,8 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
-import Visualizacao from '../site/visualizacao';
 import Home from '../componentes/home';
+import Agendamento from '../site/Agendamento';
 
 const Rotas = () =>{
     return(
@@ -10,7 +10,7 @@ const Rotas = () =>{
             <Switch>
                 <Route exact path="/" component={Home}/>
 
-                <Route exact path="/visualizacao" component={Visualizacao}/>
+                <Route exact path="/agendamento" component={Agendamento}/>
             </Switch>
         </BrowserRouter>
     );
