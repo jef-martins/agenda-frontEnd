@@ -26,9 +26,10 @@ class Agendamento extends Component {
 
     setForm(e){
         let dados = this.state.form;
-
+        console.log(e.target.value);
         dados[e.target.name] = e.target.value;
         this.setState({form: dados});
+        this.setState({status: false});
     }
 
     async componentDidMount() {
@@ -73,43 +74,47 @@ class Agendamento extends Component {
         return (
             <div>
                 <Logo/>
-                <div>
-                    {
-                        this.state.status &&
-                            <div className="row mt-3">
-                                <div className='col-10 offset-1 text-center'>
-                                    <Alerta tipo="success" texto="tarefa cadastrada com Sucesso!"/>
-                                </div>
-                            </div>
-                    }
-                </div>
-                <form>
-                    <input value={this.state.form.atividade} onChange={this.setForm} name="atividade" className="form-control mb-3 tamanho-input" type="text" placeholder="Nome da Atividade"/>
-                    
-                    <select onChange={this.setForm} name="funcEscolhido" className="form-select mb-3 tamanho-input">
-                        <option defaultValue>Funcionário</option>
-                        {
-                            this.state.funcionario.map((item)=>
-                                <option key={item.id} value={item.id}>{item.nome}</option>
-                                
-                            )
-                        }
-                    </select>
-                    
-                    <label className="tamanho-input">&nbsp;Escolha o dia da atividade</label>
-                    <input value={this.state.form.data} onChange={this.setForm} name="data" className="form-control mb-3 tamanho-input" type="date"></input>
+                <div className='card shadow-sm'>
+                    <div className='mb-3 mt-3'>
+                        <h5 className='card-title text-center'> Tela de Agendamento </h5>
+                        <div className="mb-3 mt-3">
+                            {
+                                this.state.status &&
+                                    <div className="row mt-3">
+                                        <div className='col-10 offset-1 text-center'>
+                                            <Alerta tipo="success" texto="tarefa cadastrada com Sucesso!"/>
+                                        </div>
+                                    </div>
+                            }
+                        </div>
+                        <form>
+                            <input value={this.state.form.atividade} onChange={this.setForm} name="atividade" className="form-control mb-3 tamanho-input" type="text" placeholder="Nome da Atividade"/>
+                            
+                            <select onChange={this.setForm} name="funcEscolhido" className="form-select mb-3 tamanho-input">
+                                <option defaultValue>Funcionário</option>
+                                {
+                                    this.state.funcionario.map((item)=>
+                                        <option key={item.id} value={item.id}>{item.nome}</option>
+                                    )
+                                }
+                            </select>
+                            
+                            <label className="tamanho-input">&nbsp;Escolha o dia da atividade</label>
+                            <input value={this.state.form.data} onChange={this.setForm} name="data" className="form-control mb-3 tamanho-input" type="date"></input>
 
-                    <label className="tamanho-input">&nbsp;Escolha o horário da atividade</label>
-                    <div className="input-group tamanho-div mb-3">
-                        <input value={this.state.form.hrInicial} onChange={this.setForm} name="hrInicial" className="form-control" type="time"></input>
-                        <span className="input-group-text">à</span>
-                        <input value={this.state.form.hrFinal} onChange={this.setForm} name="hrFinal" type="time" className="form-control"></input>
+                            <label className="tamanho-input">&nbsp;Escolha o horário da atividade</label>
+                            <div className="input-group tamanho-div mb-3">
+                                <input value={this.state.form.hrInicial} onChange={this.setForm} name="hrInicial" className="form-control" type="time"></input>
+                                <span className="input-group-text">à</span>
+                                <input value={this.state.form.hrFinal} onChange={this.setForm} name="hrFinal" type="time" className="form-control"></input>
+                            </div>
+                            <div className="tamanho-div d-grid gap-2 d-md-flex justify-content-md-end mb-2">
+                                <Link to="/" type="button" className="btn btn-outline-danger">Voltar</Link>
+                                <button onClick={this.onSave} type="button" className="btn btn-outline-success">Salvar</button>
+                            </div>
+                        </form>
                     </div>
-                    <div className="tamanho-div d-grid gap-2 d-md-flex justify-content-md-end mb-2">
-                        <Link to="/" type="button" className="btn btn-outline-danger">Voltar</Link>
-                        <button onClick={this.onSave} type="button" className="btn btn-outline-success">Salvar</button>
-                    </div>
-                </form>
+                </div>
             </div>
         );
     }

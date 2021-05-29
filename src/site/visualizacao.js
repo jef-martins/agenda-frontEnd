@@ -12,7 +12,8 @@ import filtro from '../images/funnel-fill.svg';
 import lupa from '../images/search.svg';
 import left from '../images/caret-left.svg';
 import right from '../images/caret-right.svg';
-import sign from '../images/sign.svg';
+import add from '../images/sign.svg';
+import file from '../images/file.svg';
 
 
 class Visualizacao extends Component {
@@ -36,10 +37,12 @@ class Visualizacao extends Component {
     }
 
      async excluir(id, fkData) {
-        await api.delete('tarefa/'+id);
-        await api.delete('data/'+fkData);
+        if(window.confirm("Deseja realmente excluir esse registro?")){
+            await api.delete('tarefa/'+id);
+            await api.delete('data/'+fkData);
 
-        await this.atualizaGrid();
+            await this.atualizaGrid();
+        }
     } 
 
     async atualizaGrid() {
@@ -99,6 +102,14 @@ class Visualizacao extends Component {
         this.setState({mes: mes});
     }
 
+    mostraData(item){
+        let dia, mes, ano;//new Date(item.dia).toLocaleDateString("pt-br")
+        dia = item.substr(-2,2);
+        mes = item.substr(0,7);mes = mes.substr(-2,2);
+        ano = item.substr(0,4)
+        return dia+"/"+mes+"/"+ano;
+    }
+
     render(){
         return (
             <div>
@@ -114,7 +125,8 @@ class Visualizacao extends Component {
                                         <Link to={`/agendamento`} type="button" className="btn btn-outline-secondary"><img src={calendario} alt='Adicionar Tarefa'/></Link>
                                         <button type="button" className="btn btn-outline-secondary"><img src={relatorio} alt='Relatório'/></button>
                                         <button type="button" className="btn btn-outline-secondary"><img src={filtro} alt='Filtrar'/></button>
-                                        <button type="button" className="btn btn-outline-secondary"><img src={sign} alt='Entrar'/></button>
+                                        <button type="button" className="btn btn-outline-secondary"><img src={add} alt='Adicionar Funcionario'/></button>
+                                        <button type="button" className="btn btn-outline-secondary"><img src={file} alt='Adicionar Status'/></button>
                                     </div>
                                     <div className="input-group">
                                         <input type="text" className="form-control" placeholder="Pesquisar"/>
@@ -127,7 +139,7 @@ class Visualizacao extends Component {
                                         <button onClick={this.somaMes} className="btn btn-primary btn-sm"><img src={right} alt='Direita'/></button>
                                     </div>
                                 </div>
-                               
+                                
                                 <table className='table'>
                                     <thead>
                                         <tr>
@@ -146,16 +158,16 @@ class Visualizacao extends Component {
                                             <tr key={item.id}>
                                                 <td> {item.atividade} </td>
                                                 <td> {item.nome} </td>
-                                                <td className='text-center'> {new Date(item.dia).toLocaleDateString()} </td>
+                                                <td className='text-center'>{this.mostraData(item.dia)}</td>
                                                 <td className='text-center'> {item.hrInicial.substr(0,5)} </td>
                                                 <td className='text-center'> {item.hrFinal.substr(0,5)} </td>
                                                 <td> {item.andamento} </td>
                                                 <td> {item.observacao} </td>
                                                 <td className='text-center'>  
-                                                    <Link to={`/`} className="link btn btn-outline-light">
+                                                    <Link to={`/alteracao/`+item.id+`/`+item.fkIntegrante+`/`+item.fkStatus} className="link btn btn-outline-light">
                                                         <img className="" src={pencil} alt='Editar'/>
                                                     </Link>   
-
+                        
                                                     <button onClick={()=>this.excluir(item.id,item.fkData)} type="button" className="btn btn-outline-light">
                                                         <img className="" src={trash} alt='Excluir'/>
                                                     </button>

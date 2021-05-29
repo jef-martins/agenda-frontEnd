@@ -1,7 +1,7 @@
 import React, { Component }from 'react';
 import '../bootstrap.css';
 
-export default class Alerta extends Component{
+class Alerta extends Component{
     /*constructor(props){
         super(props);
     }*/
@@ -14,4 +14,5 @@ export default class Alerta extends Component{
         )
     }
 }
-  
+
+export default Alerta;
