@@ -7,9 +7,10 @@ import Logo from '../componentes/logo';
 import pencil from '../images/pencil-fill.svg';
 import trash from '../images/trash-fill.svg';
 import calendario from '../images/calendar-plus.svg';
-import relatorio from '../images/clipboard-data.svg';
-import filtro from '../images/funnel-fill.svg';
+//import relatorio from '../images/clipboard-data.svg';
+//import filtro from '../images/funnel-fill.svg';
 import lupa from '../images/search.svg';
+import close from '../images/close.svg';
 import left from '../images/caret-left.svg';
 import right from '../images/caret-right.svg';
 import add from '../images/sign.svg';
@@ -22,7 +23,9 @@ class Visualizacao extends Component {
         this.state = {
             tarefas: [],
             mesN: new Date().getMonth() + 1,//para iniciar a contagem do mês
-            mes: ''
+            mes: '',
+            statusPesquisa: false,
+            pesquisa: ''
         }
         this.verificaMes = this.verificaMes.bind(this); 
         this.atualizaGrid = this.atualizaGrid.bind(this);
@@ -110,6 +113,13 @@ class Visualizacao extends Component {
         return dia+"/"+mes+"/"+ano;
     }
 
+    /* changePesquisar(e){
+        let texto = e.target.value;
+
+        if(texto.lenght > 0)    
+            this.setState({pesquisa: true});
+    } */
+
     render(){
         return (
             <div>
@@ -123,15 +133,24 @@ class Visualizacao extends Component {
                                 <div className="btn-toolbar justify-content-between mb-3 mt-3" role="toolbar">
                                     <div className="btn-group" role="group" aria-label="First group">
                                         <Link to={`/agendamento`} type="button" className="btn btn-outline-secondary"><img src={calendario} alt='Adicionar Tarefa'/></Link>
+                                        {/* 
                                         <button type="button" className="btn btn-outline-secondary"><img src={relatorio} alt='Relatório'/></button>
                                         <button type="button" className="btn btn-outline-secondary"><img src={filtro} alt='Filtrar'/></button>
-                                        <button type="button" className="btn btn-outline-secondary"><img src={add} alt='Adicionar Funcionario'/></button>
-                                        <button type="button" className="btn btn-outline-secondary"><img src={file} alt='Adicionar Status'/></button>
+                                         */}
+                                        <Link to={`/addFuncionario`} type="button" className="btn btn-outline-secondary"><img src={add} alt='Adicionar Funcionario'/></Link>
+                                        <Link to={`/addStatus`} type="button" className="btn btn-outline-secondary"><img src={file} alt='Adicionar Status'/></Link>
                                     </div>
-                                    <div className="input-group">
-                                        <input type="text" className="form-control" placeholder="Pesquisar"/>
-                                        <button className="input-group-text"><img src={lupa} alt='Pesquisar'/></button>
-                                    </div>
+                                    
+                                    {/* <div className="input-group">
+                                        <input onChange={this.changePesquisar} name="txtPesquisa" type="text" className="form-control" placeholder="Pesquisar"/>
+                                        {
+                                            this.state.pesquisa ?
+                                                <button className="input-group-text"><img src={close} alt='Pesquisar'/></button>
+                                            :
+                                                <button className="input-group-text"><img src={lupa} alt='Pesquisar'/></button>
+
+                                        }        
+                                    </div> */}
                                     
                                     <div className="input-group">
                                         <button onClick={this.subMes} className="btn btn-primary btn-sm"><img src={left} alt='Esquerda'/></button>
