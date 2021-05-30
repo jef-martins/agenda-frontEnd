@@ -27,10 +27,13 @@ class Visualizacao extends Component {
             statusPesquisa: false,
             pesquisa: ''
         }
-        this.verificaMes = this.verificaMes.bind(this); 
+        this.changePesquisar = this.changePesquisar.bind(this); 
         this.atualizaGrid = this.atualizaGrid.bind(this);
         this.subMes = this.subMes.bind(this); 
         this.somaMes = this.somaMes.bind(this); 
+        this.somaMes = this.somaMes.bind(this); 
+        this.pesquisar = this.pesquisar.bind(this); 
+        this.fecharPesquisa = this.fecharPesquisa.bind(this); 
     }
 
     async componentDidMount() {
@@ -62,7 +65,9 @@ class Visualizacao extends Component {
         await this.verificaMes();
         await this.atualizaGrid();
         await this.verificaMes();
-        
+
+        if(this.state.statusPesquisa === true)
+            await this.fecharPesquisa();
     }
 
     async somaMes(){
@@ -72,6 +77,9 @@ class Visualizacao extends Component {
         await this.verificaMes();
         await this.atualizaGrid();
         await this.verificaMes();
+
+        if(this.state.statusPesquisa === true)
+            await this.fecharPesquisa();
     }
 
     async verificaMes(){
@@ -99,8 +107,10 @@ class Visualizacao extends Component {
             mes =  "Outubro";
         }else if(this.state.mesN === 11){
             mes =  "Novembro";
-        }else{
+        }else if(this.state.mesN === 12){
             mes =  "Dezembro";
+        }else{
+            mes = "Pesquisa"
         }
         this.setState({mes: mes});
     }
@@ -113,12 +123,77 @@ class Visualizacao extends Component {
         return dia+"/"+mes+"/"+ano;
     }
 
-    /* changePesquisar(e){
-        let texto = e.target.value;
+    async pesquisar(){
+        let param = this.state.pesquisa;
+        if(this.state.pesquisa.length > 0) {  
+            this.setState({statusPesquisa: true});
+            if(this.state.pesquisa.indexOf("/") !== -1){//formatar a data para igualar com o que está salvo no banco
+                let dia, mes, ano;
+                dia = param.substr(0,2);
+                mes = param.substr(0,5);mes = mes.substr(-2,2);
+                ano = param.substr(-4,4)
+                param = ano+"-"+mes+"-"+dia;
+            }
+            const response = await api.get('tarefa/pesquisa/filtro/'+param);
+            this.setState({tarefas: response.data});
 
-        if(texto.lenght > 0)    
-            this.setState({pesquisa: true});
-    } */
+            this.setState({mesN: 0});
+            await this.verificaMes();
+            await this.verificaMes();
+        }
+    }
+
+    async fecharPesquisa(){  
+        this.setState({pesquisa: ''}); 
+        this.setState({statusPesquisa: false})
+        this.setState({mesN: new Date().getMonth() + 1})
+        
+        await this.verificaMes();
+        await this.atualizaGrid();
+        await this.verificaMes();
+    }
+
+    changePesquisar(e){
+        this.setState({pesquisa: e.target.value});
+    }
+
+    atraso(item, item2, item3){
+        let d = new Date();
+        let dia, mes, ano, data, hora, min, seg, tempo;
+
+        dia = d.getDate();
+        if (dia < 10)
+            dia = '0'+dia
+
+        mes = d.getMonth();
+        if (mes < 10)
+            mes = '0'+ (mes+1)
+
+        ano = d.getUTCFullYear();
+        data = ano+'-'+ mes+'-'+dia;
+
+        hora = d.getHours(); 
+        if (hora < 10)
+            hora = '0'+hora;
+        
+        min = d.getMinutes();
+        if (min < 10)
+            min = '0'+min;
+        
+        seg = d.getSeconds();
+        if (seg < 10)
+            seg = '0'+seg;
+
+        tempo = hora+':'+min+':'+seg;
+
+        const data1 = new Date(item+' ' + item2);
+        const data2 = new Date(data+' ' + tempo);
+
+        if (new Date(data1).getTime() < new Date(data2).getTime() && item3 !== 'Concluído')
+            return true;
+        else 
+            return false;
+    }
 
     render(){
         return (
@@ -141,16 +216,15 @@ class Visualizacao extends Component {
                                         <Link to={`/addStatus`} type="button" className="btn btn-outline-secondary"><img src={file} alt='Adicionar Status'/></Link>
                                     </div>
                                     
-                                    {/* <div className="input-group">
-                                        <input onChange={this.changePesquisar} name="txtPesquisa" type="text" className="form-control" placeholder="Pesquisar"/>
+                                    <div className="input-group">
+                                        <input onChange={this.changePesquisar} value={this.state.pesquisa} name="txtPesquisa" type="text" className="form-control" placeholder="Pesquisar"/>
                                         {
-                                            this.state.pesquisa ?
-                                                <button className="input-group-text"><img src={close} alt='Pesquisar'/></button>
+                                            this.state.statusPesquisa ?
+                                                <button onClick={this.fecharPesquisa} className="input-group-text"><img src={close} alt='Cancelar'/></button>
                                             :
-                                                <button className="input-group-text"><img src={lupa} alt='Pesquisar'/></button>
-
+                                                <button onClick={this.pesquisar} className="input-group-text"><img src={lupa} alt='Pesquisar'/></button>
                                         }        
-                                    </div> */}
+                                    </div>
                                     
                                     <div className="input-group">
                                         <button onClick={this.subMes} className="btn btn-primary btn-sm"><img src={left} alt='Esquerda'/></button>
@@ -174,7 +248,10 @@ class Visualizacao extends Component {
                                     </thead>
                                     <tbody>
                                         {this.state.tarefas.map(item => (
-                                            <tr key={item.id}>
+                                            <tr key={item.id} style={{ color: 
+                                                                        this.atraso(item.dia, item.hrFinal, item.andamento) && 
+                                                                        'red'//.toLocaleDateString('pt-BR', {timeZone: 'UTC'})
+                                                                    }}>
                                                 <td> {item.atividade} </td>
                                                 <td> {item.nome} </td>
                                                 <td className='text-center'>{this.mostraData(item.dia)}</td>

@@ -26,7 +26,7 @@ class Agendamento extends Component {
 
     setForm(e){
         let dados = this.state.form;
-        console.log(e.target.value);
+
         dados[e.target.name] = e.target.value;
         this.setState({form: dados});
         this.setState({status: false});
